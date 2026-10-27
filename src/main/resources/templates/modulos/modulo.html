@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${modulo + ' | TAI LOY'}">Módulo | TAI LOY</title>
+    <link rel="stylesheet" th:href="@{/css/portal.css}">
+</head>
+<body class="app-body">
+<header class="topbar"><div class="brand-area"><div class="brand-mark small">TL</div><div><strong>TAI LOY</strong><span>Portal de Proveedores</span></div></div><div class="user-area"><div class="user-avatar" th:text="${#strings.substring(usuario.nombre,0,1).toUpperCase()}">A</div><div class="user-copy"><strong th:text="${usuario.nombre}">Usuario</strong><span th:text="${usuario.rol}">ROL</span></div><form th:action="@{/logout}" method="post"><button class="logout-button" type="submit">Salir</button></form></div></header>
+<div class="app-layout"><aside class="sidebar"><p class="menu-label">MENÚ PRINCIPAL</p><a class="nav-item" th:href="@{/facturas}"><span>▣</span> Inicio</a><a class="nav-item" th:href="@{/facturas}"><span>▤</span> Mis facturas</a><a class="nav-item" th:href="@{/facturas/nueva}"><span>＋</span> Registrar factura</a><p class="menu-label">GESTIÓN</p><a class="nav-item" th:href="@{/modulos/ordenes}"><span>▦</span> Órdenes de compra</a><a class="nav-item" th:href="@{/modulos/pagos}"><span>◉</span> Pagos</a><a class="nav-item" th:href="@{/modulos/documentos}"><span>▧</span> Documentos</a><a class="nav-item" th:href="@{/modulos/historial}"><span>◷</span> Historial</a></aside>
+<main class="dashboard"><a class="back-link" th:href="@{/facturas}">← Volver al panel</a><div class="module-hero"><span class="module-icon">◈</span><div><span class="mini-label" th:text="${modulo}">MÓDULO</span><h1 th:text="${#strings.capitalize(#strings.toLowerCase(modulo))}">Módulo</h1><p>Esta sección está preparada para integrarse con los procesos del portal.</p></div></div><section class="panel empty-module"><div class="big-check">✓</div><h2>Módulo listo para la siguiente iteración</h2><p>La arquitectura, navegación y control de acceso ya están preparados. La funcionalidad principal de registro y consulta de facturas se encuentra operativa.</p><a class="primary-button compact" th:href="@{/facturas}">Volver al inicio</a></section></main></div>
+</body></html>

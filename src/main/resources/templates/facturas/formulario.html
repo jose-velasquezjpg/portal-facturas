@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar factura | TAI LOY</title>
+    <link rel="stylesheet" th:href="@{/css/portal.css}">
+</head>
+<body class="app-body">
+<header class="topbar">
+    <div class="brand-area">
+        <div class="brand-mark small">TL</div>
+        <div><strong>TAI LOY</strong><span>Portal de Proveedores</span></div>
+    </div>
+    <a class="button-secondary" th:href="@{/facturas}">Volver a la bandeja</a>
+</header>
+<main class="container narrow">
+    <p class="eyebrow">NUEVO COMPROBANTE</p>
+    <h1>Registrar factura</h1>
+    <p>Complete los datos del comprobante y adjunte sus archivos electrónicos.</p>
+
+    <div class="alert" th:if="${errorNegocio}" th:text="${errorNegocio}"></div>
+
+    <form class="panel form-grid" th:action="@{/facturas/guardar}" th:object="${facturaForm}" method="post" enctype="multipart/form-data">
+        <div th:if="${rol == 'PROVEEDOR'}">
+            <input type="hidden" th:field="*{proveedorId}">
+            <p><strong>Proveedor asociado:</strong> la cuenta limita el registro a su proveedor.</p>
+        </div>
+        <div th:if="${rol != 'PROVEEDOR'}">
+            <label for="proveedorId">Proveedor</label>
+            <select id="proveedorId" th:field="*{proveedorId}" required>
+                <option value="">Seleccione proveedor</option>
+                <option th:each="p : ${proveedores}" th:value="${p.proveedorId}" th:text="${p.razonSocial}"></option>
+            </select>
+            <small th:errors="*{proveedorId}"></small>
+        </div>
+        <div>
+            <label for="ordenCompraId">Orden de compra</label>
+            <select id="ordenCompraId" th:field="*{ordenCompraId}" required>
+                <option value="">Seleccione orden</option>
+                <option th:each="oc : ${ordenes}" th:value="${oc.ordenCompraId}" th:text="${oc.numeroOc}"></option>
+            </select>
+            <small th:errors="*{ordenCompraId}"></small>
+        </div>
+        <div>
+            <label for="serie">Serie</label>
+            <input id="serie" th:field="*{serie}" maxlength="5" placeholder="F001" required>
+            <small th:errors="*{serie}"></small>
+        </div>
+        <div>
+            <label for="numero">Número</label>
+            <input id="numero" th:field="*{numero}" maxlength="20" placeholder="00001234" required>
+            <small th:errors="*{numero}"></small>
+        </div>
+        <div>
+            <label for="fechaEmision">Fecha de emisión</label>
+            <input id="fechaEmision" th:field="*{fechaEmision}" type="date" required>
+            <small th:errors="*{fechaEmision}"></small>
+        </div>
+        <div>
+            <label for="moneda">Moneda</label>
+            <select id="moneda" th:field="*{moneda}">
+                <option value="PEN">PEN - Sol peruano</option>
+                <option value="USD">USD - Dólar estadounidense</option>
+            </select>
+            <small th:errors="*{moneda}"></small>
+        </div>
+        <div>
+            <label for="subtotal">Subtotal</label>
+            <input id="subtotal" th:field="*{subtotal}" type="number" min="0" step="0.01" required>
+            <small th:errors="*{subtotal}"></small>
+        </div>
+        <div>
+            <label for="igv">IGV</label>
+            <input id="igv" th:field="*{igv}" type="number" min="0" step="0.01" required>
+            <small th:errors="*{igv}"></small>
+        </div>
+        <div>
+            <label for="total">Total</label>
+            <input id="total" th:field="*{total}" type="number" min="0.01" step="0.01" required>
+            <small th:errors="*{total}"></small>
+        </div>
+
+        <div class="attachment-box">
+            <div class="attachment-heading">
+                <div>
+                    <span class="mini-label">DOCUMENTOS ELECTRÓNICOS</span>
+                    <h2>Adjuntar factura</h2>
+                </div>
+                <span class="attachment-badge">PDF + XML</span>
+            </div>
+            <p class="attachment-help">Adjunte los dos archivos de la factura electrónica. Formatos permitidos: PDF y XML. Máximo 10 MB por archivo.</p>
+            <div class="attachment-grid">
+                <div class="file-field">
+                    <label for="archivoPdf">📄 Factura en PDF <span>Obligatorio</span></label>
+                    <input id="archivoPdf" name="archivoPdf" type="file" accept="application/pdf,.pdf" required>
+                    <small>Vista legible del comprobante.</small>
+                </div>
+                <div class="file-field">
+                    <label for="archivoXml">🧾 Comprobante XML <span>Obligatorio</span></label>
+                    <input id="archivoXml" name="archivoXml" type="file" accept="application/xml,text/xml,.xml" required>
+                    <small>Archivo electrónico emitido para la factura.</small>
+                </div>
+            </div>
+        </div>
+
+        <p class="help">Regla: el total debe ser igual al subtotal más el IGV. El sistema también valida la relación con la orden de compra, los duplicados y los archivos adjuntos.</p>
+        <div class="form-actions">
+            <button type="submit">Guardar factura y adjuntos</button>
+            <a class="button-secondary" th:href="@{/facturas}">Cancelar</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

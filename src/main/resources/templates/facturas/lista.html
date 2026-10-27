@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel principal | TAI LOY Proveedores</title>
+    <link rel="stylesheet" th:href="@{/css/portal.css}">
+</head>
+<body class="app-body">
+<header class="topbar">
+    <div class="brand-area"><div class="brand-mark small">TL</div><div><strong>TAI LOY</strong><span>Portal de Proveedores</span></div></div>
+    <div class="user-area"><div class="user-avatar" th:text="${#strings.substring(usuario.nombre,0,1).toUpperCase()}">A</div><div class="user-copy"><strong th:text="${usuario.nombre}">Usuario</strong><span th:text="${usuario.rol}">ROL</span></div><form th:action="@{/logout}" method="post"><button class="logout-button" type="submit">Salir</button></form></div>
+</header>
+<div class="app-layout">
+    <aside class="sidebar">
+        <p class="menu-label">MENÚ PRINCIPAL</p>
+        <a class="nav-item active" th:href="@{/facturas}"><span>▣</span> Inicio</a>
+        <a class="nav-item" th:href="@{/facturas}"><span>▤</span> Mis facturas</a>
+        <a class="nav-item" th:href="@{/facturas/nueva}"><span>＋</span> Registrar factura</a>
+        <p class="menu-label">GESTIÓN</p>
+        <a class="nav-item" th:href="@{/modulos/ordenes}"><span>▦</span> Órdenes de compra</a>
+        <a class="nav-item" th:href="@{/modulos/pagos}"><span>◉</span> Pagos</a>
+        <a class="nav-item" th:href="@{/modulos/documentos}"><span>▧</span> Documentos</a>
+        <a class="nav-item" th:href="@{/modulos/historial}"><span>◷</span> Historial</a>
+        <p class="menu-label">AYUDA</p>
+        <a class="nav-item" th:href="@{/recuperar-clave}"><span>?</span> Soporte</a>
+    </aside>
+    <main class="dashboard">
+        <div class="welcome-row">
+            <div><span class="mini-label">PANEL PRINCIPAL</span><h1>Hola, <span th:text="${usuario.nombre}">Usuario</span> 👋</h1><p>Consulta y gestiona la información de tus comprobantes.</p></div>
+            <a class="primary-button compact" th:if="${usuario.rol != 'TESORERIA'}" th:href="@{/facturas/nueva}">＋ Registrar factura</a>
+        </div>
+        <div th:if="${param.registrada}" class="success">La factura fue registrada correctamente.</div>
+        <div th:if="${mensaje}" class="alert" th:text="${mensaje}"></div>
+        <section class="stats-grid">
+            <article class="stat-card"><div class="stat-icon blue">▤</div><div><span>Total visibles</span><strong th:text="${#lists.size(facturas)}">0</strong><small>Facturas</small></div></article>
+            <article class="stat-card"><div class="stat-icon amber">◷</div><div><span>En revisión</span><strong th:text="${#lists.size(facturas)}">0</strong><small>Seguimiento</small></div></article>
+            <article class="stat-card"><div class="stat-icon green">✓</div><div><span>Acceso</span><strong>Activo</strong><small th:text="${usuario.rol}">ROL</small></div></article>
+            <article class="stat-card"><div class="stat-icon purple">◈</div><div><span>Moneda</span><strong>PEN</strong><small>Principal</small></div></article>
+        </section>
+        <section class="panel table-panel">
+            <div class="section-heading"><div><span class="mini-label">BANDEJA DE TRABAJO</span><h2>Facturas recientes</h2></div><div><a class="text-link" th:href="@{/facturas/exportar}">⭳ Exportar Excel</a> &nbsp; <a class="text-link" th:href="@{/facturas}">Ver todas →</a></div></div>
+            <div class="table-wrap"><table><thead><tr><th>Comprobante</th><th>Proveedor</th><th>Orden de compra</th><th>Fecha</th><th>Total</th><th>Estado</th></tr></thead><tbody><tr th:each="f : ${facturas}"><td><strong th:text="${f.serie + '-' + f.numero}">F001-00001</strong><span class="table-sub">Factura electrónica</span></td><td th:text="${f.proveedor}">Proveedor</td><td th:text="${f.numeroOc}">OC-0001</td><td th:text="${f.fechaEmision}">2026-10-20</td><td th:text="${f.total}">S/ 0.00</td><td><span class="status" th:text="${f.estadoFactura}">Registrada</span></td></tr><tr th:if="${#lists.isEmpty(facturas)}"><td colspan="6" class="empty"><strong>No hay facturas registradas</strong><span>Cuando registres una factura aparecerá aquí.</span></td></tr></tbody></table></div>
+        </section>
+        <p class="footer-note">Portal académico de demostración · Arquitectura MVC + DAO + Spring Security + PostgreSQL</p>
+    </main>
+</div>
+</body>
+</html>

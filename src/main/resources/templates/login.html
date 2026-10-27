@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión | TAI LOY Proveedores</title>
+    <link rel="stylesheet" th:href="@{/css/portal.css}">
+</head>
+<body class="login-page">
+<div class="login-shell">
+    <section class="login-brand">
+        <div class="brand-mark">TL</div>
+        <p class="eyebrow light">TAI LOY S.A.</p>
+        <h1>Portal de Proveedores</h1>
+        <p>Gestiona tus facturas, órdenes de compra y seguimiento de pagos desde un solo lugar.</p>
+        <div class="secure-pill">🔒 Conexión segura · Acceso autorizado</div>
+    </section>
+    <main class="login-card">
+        <div class="login-heading">
+            <span class="mini-label">ACCESO AL PORTAL</span>
+            <h2>Bienvenido</h2>
+            <p>Ingresa con las credenciales asignadas por TAI LOY.</p>
+        </div>
+        <div class="alert" th:if="${param.error}">Usuario o contraseña incorrectos.</div>
+        <div class="success" th:if="${param.logout}">Sesión cerrada correctamente.</div>
+        <form th:action="@{/login}" method="post">
+            <label for="username">Usuario o correo electrónico</label>
+            <input id="username" name="username" type="email" placeholder="usuario@empresa.com" required autocomplete="username">
+            <label for="password">Contraseña</label>
+            <input id="password" name="password" type="password" placeholder="Ingresa tu contraseña" required autocomplete="current-password">
+            <div class="login-options">
+                <label class="check"><input type="checkbox" name="remember-me"> Mantener sesión</label>
+                <a th:href="@{/recuperar-clave}">¿Olvidaste tu contraseña?</a>
+            </div>
+            <button class="primary-button" type="submit">Ingresar al portal <span>→</span></button>
+        </form>
+        <div class="login-help">
+            <strong>¿Necesitas ayuda?</strong>
+            <span>Contacta al área de Compras o Administración de Proveedores.</span>
+        </div>
+        <p class="demo-note">Entorno académico de demostración · TAI LOY S.A.</p>
+    </main>
+</div>
+</body>
+</html>

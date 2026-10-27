@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar acceso | TAI LOY</title>
+    <link rel="stylesheet" th:href="@{/css/portal.css}">
+</head>
+<body class="login-page">
+<div class="login-shell single">
+    <main class="login-card recovery-card">
+        <a class="back-link" th:href="@{/login}">← Volver al inicio de sesión</a>
+        <div class="recovery-icon">↗</div>
+        <span class="mini-label">RECUPERACIÓN DE ACCESO</span>
+        <h2>¿Olvidaste tu contraseña?</h2>
+        <p>Ingresa el correo asociado a tu cuenta. En un entorno productivo, recibirías un enlace de recuperación en ese correo.</p>
+        <div class="success" th:if="${mensaje}" th:text="${mensaje}"></div>
+        <form th:action="@{/recuperar-clave}" method="post">
+            <label for="correo">Correo electrónico</label>
+            <input id="correo" name="correo" type="email" placeholder="usuario@empresa.com" required>
+            <button class="primary-button" type="submit">Solicitar recuperación <span>→</span></button>
+        </form>
+        <div class="login-help">
+            <strong>Soporte</strong>
+            <span>Si no tienes acceso al correo registrado, solicita ayuda al administrador del portal.</span>
+        </div>
+    </main>
+</div>
+</body>
+</html>
